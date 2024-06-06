@@ -44,7 +44,7 @@ fi
 
 if [ "$message_count" -gt "$last_uid" ]; then
     info "$(($message_count - $last_uid)) new messages!"
-    for (( uid=1; uid <= $message_count; uid++ )); do
+    for (( uid="$last_uid"; uid <= $message_count; uid++ )); do
 
         # setup directory
         mkdir './.temp/'$uid &> /dev/null
