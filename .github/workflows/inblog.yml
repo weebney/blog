@@ -1,0 +1,27 @@
+name: Run inblog
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # Runs at 00:00 UTC every day
+
+jobs:
+  update-blog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Run inblog
+        run: |
+          chmod +x ./inblog
+          ./inblog
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "Github Action"
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Add new blog posts" && git push)
